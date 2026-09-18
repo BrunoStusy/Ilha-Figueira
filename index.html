@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Associação Ilha Figueira</title>
+    <!-- Fonte moderna do Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-primaria: #2d6a4f; /* Verde mata */
+            --cor-secundaria: #40916c; /* Verde claro */
+            --cor-fundo: #f4f7f6; /* Cinza bem claro/areia */
+            --cor-livre: #e8f5e9;
+            --cor-livre-borda: #81c784;
+            --cor-ocupado: #ffebee;
+            --cor-ocupado-texto: #c62828;
+            --cor-texto: #333333;
+            --sombra: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: var(--cor-primaria);
+            color: white;
+            width: 100%;
+            padding: 30px 20px;
+            text-align: center;
+            box-sizing: border-box;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: var(--sombra);
+            margin-bottom: -20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 0.9rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .legenda {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            flex-wrap: wrap;
+        }
+
+        .item-legenda {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bolinha {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .controles-mes {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .btn-mes {
+            background-color: var(--cor-secundaria);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .btn-mes:active { transform: scale(0.9); }
+
+        #mes-atual { font-size: 1.3rem; font-weight: 700; color: var(--cor-primaria); margin: 0; text-transform: capitalize;}
+
+        .grade-calendario {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .dia-semana {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .dia {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .livre {
+            background-color: var(--cor-livre);
+            border: 1px solid var(--cor-livre-borda);
+            color: var(--cor-primaria);
+        }
+
+        .livre:active { transform: scale(0.92); background-color: var(--cor-livre-borda); color: white;}
+
+        .ocupado {
+            background-color: var(--cor-ocupado);
+            color: var(--cor-ocupado-texto);
+            cursor: not-allowed;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .inativo {
+            background-color: transparent;
+            color: transparent;
+            pointer-events: none;
+        }
+
+        .aniversario {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            font-size: 1rem;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        }
+
+        #loading {
+            text-align: center;
+            font-weight: 600;
+            color: var(--cor-secundaria);
+            padding: 40px 0;
+            animation: piscar 1.5s infinite;
+        }
+
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Ilha Figueira</h1>
+        <p>Rio Ivaí - PR</p>
+    </header>
+
+    <div class="container">
+        <div class="legenda">
+            <div class="item-legenda"><div class="bolinha" style="background: var(--cor-livre-borda);"></div> Livre</div>
+            <div class="item-legenda"><div class="bolinha" style="background: var(--cor-ocupado-texto);"></div> Ocupado</div>
+            <div class="item-legenda">🎂 Aniversário</div>
+        </div>
+
+        <div class="controles-mes">
+            <button class="btn-mes" onclick="mudarMes(-1)">◀</button>
+            <h2 id="mes-atual">Carregando...</h2>
+            <button class="btn-mes" onclick="mudarMes(1)">▶</button>
+        </div>
+
+        <div id="loading">Conectando ao banco de dados...</div>
+
+        <div class="grade-calendario" id="calendario" style="display: none;"></div>
+    </div>
+
+    <script>
+        // === CONFIGURAÇÕES PRINCIPAIS ===
+        const URL_API = 'SUA_URL_DO_APPS_SCRIPT_AQUI'; 
+        const NUMERO_WHATSAPP = '5544999129659'; // Ex: 55 (Brasil) + 44 (DDD) + Numero
+        // ================================
+
+        let dataAtual = new Date();
+        let dadosPlanilha = { reservas: {}, aniversarios: {} };
+        const nomesMeses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+        const diasSemana = ["D", "S", "T", "Q", "Q", "S", "S"];
+
+        async function carregarDados() {
+            try {
+                if(URL_API === 'https://script.google.com/macros/s/AKfycbyObehSqYcwzEgCLK1j5WhUHWfL0jPraVMOVPuwvDxI4qB3V9AuAEQczOkFFOGWGTOj/exec') {
+                    // Dados falsos de demonstração caso a URL não seja inserida
+                    dadosPlanilha = { 
+                        reservas: { "20/09/2026": "Teste" }, 
+                        aniversarios: { "25/09": "Teste" } 
+                    };
+                } else {
+                    const response = await fetch(URL_API);
+                    dadosPlanilha = await response.json();
+                }
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('calendario').style.display = 'grid';
+                renderizarCalendario();
+            } catch (error) {
+                document.getElementById('loading').innerText = "Erro ao carregar. Verifique o link da API.";
+            }
+        }
+
+        function renderizarCalendario() {
+            const grade = document.getElementById('calendario');
+            grade.innerHTML = ''; 
+
+            const mes = dataAtual.getMonth();
+            const ano = dataAtual.getFullYear();
+            document.getElementById('mes-atual').innerText = `${nomesMeses[mes]} ${ano}`;
+
+            diasSemana.forEach(dia => {
+                const div = document.createElement('div');
+                div.className = 'dia-semana';
+                div.innerText = dia;
+                grade.appendChild(div);
+            });
+
+            const primeiroDia = new Date(ano, mes, 1).getDay();
+            const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+
+            for (let i = 0; i < primeiroDia; i++) {
+                const div = document.createElement('div');
+                div.className = 'dia inativo';
+                grade.appendChild(div);
+            }
+
+            for (let dia = 1; dia <= ultimoDia; dia++) {
+                const div = document.createElement('div');
+                const d = String(dia).padStart(2, '0');
+                const m = String(mes + 1).padStart(2, '0');
+                const dataCompleta = `${d}/${m}/${ano}`;
+                const dataAniv = `${d}/${m}`;
+
+                div.innerText = dia;
+
+                if (dadosPlanilha.aniversarios[dataAniv]) {
+                    const icone = document.createElement('div');
+                    icone.className = 'aniversario';
+                    icone.innerText = '🎂';
+                    div.appendChild(icone);
+                }
+
+                if (dadosPlanilha.reservas[dataCompleta]) {
+                    div.className = 'dia ocupado';
+                    div.onclick = () => alert(`Esta data já está reservada por: ${dadosPlanilha.reservas[dataCompleta]}`);
+                } else {
+                    div.className = 'dia livre';
+                    div.onclick = () => abrirWhatsApp(dataCompleta);
+                }
+
+                grade.appendChild(div);
+            }
+        }
+
+        function mudarMes(direcao) {
+            dataAtual.setMonth(dataAtual.getMonth() + direcao);
+            renderizarCalendario();
+        }
+
+        function abrirWhatsApp(dataEscolhida) {
+            const mensagem = `Olá Bruno! Vi no aplicativo que a Ilha Figueira está livre no dia ${dataEscolhida}. Gostaria de fazer uma reserva.`;
+            const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, '_blank');
+        }
+
+        carregarDados();
+    </script>
+</body>
+</html>
