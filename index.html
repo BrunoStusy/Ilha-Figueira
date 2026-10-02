@@ -66,6 +66,7 @@
             box-shadow: var(--sombra);
             box-sizing: border-box;
             z-index: 10;
+            margin-bottom: 30px;
         }
 
         .legenda {
@@ -184,6 +185,65 @@
             filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
         }
 
+        /* Nova Seção de Aniversariantes do Mês */
+        .secao-aniversarios {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #eef2f0;
+        }
+
+        .secao-aniversarios h3 {
+            font-size: 1rem;
+            color: var(--cor-primaria);
+            margin: 0 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .lista-aniversarios {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .item-aniversario {
+            background-color: var(--cor-fundo);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .item-aniversario .nome-aniv {
+            color: var(--cor-texto);
+            font-weight: 600;
+        }
+
+        .item-aniversario .data-aniv {
+            color: var(--cor-secundaria);
+            font-weight: 700;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .sem-aniversarios {
+            font-size: 0.85rem;
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            margin: 10px 0;
+        }
+
         #loading {
             text-align: center;
             font-weight: 600;
@@ -220,11 +280,18 @@
 
         <div id="loading">Buscando agenda atualizada...</div>
 
-        <div class="grade-calendario" id="calendario" style="display: none;"></div>
+        <div id="conteudo-app" style="display: none;">
+            <div class="grade-calendario" id="calendario"></div>
+
+            <!-- Lista de Aniversariantes do Mês -->
+            <div class="secao-aniversarios">
+                <h3>🎂 Aniversariantes do Mês</h3>
+                <div id="lista-aniversarios" class="lista-aniversarios"></div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // DADOS CONFIGURADOS
         const URL_API = 'https://script.google.com/macros/s/AKfycbyObehSqYcwzEgCLK1j5WhUHWfL0jPraVMOVPuwvDxI4qB3V9AuAEQczOkFFOGWGTOj/exec'; 
         const NUMERO_WHATSAPP = '5544999129659';
 
@@ -241,7 +308,7 @@
                 dadosPlanilha = await response.json();
                 
                 document.getElementById('loading').style.display = 'none';
-                document.getElementById('calendario').style.display = 'grid';
+                document.getElementById('conteudo-app').style.display = 'block';
                 renderizarCalendario();
             } catch (error) {
                 console.error(error);
@@ -255,6 +322,8 @@
 
             const mes = dataAtual.getMonth();
             const ano = dataAtual.getFullYear();
+            const m = String(mes + 1).padStart(2, '0');
+
             document.getElementById('mes-atual').innerText = `${nomesMeses[mes]} ${ano}`;
 
             diasSemana.forEach(dia => {
@@ -276,7 +345,6 @@
             for (let dia = 1; dia <= ultimoDia; dia++) {
                 const div = document.createElement('div');
                 const d = String(dia).padStart(2, '0');
-                const m = String(mes + 1).padStart(2, '0');
                 const dataCompleta = `${d}/${m}/${ano}`;
                 const dataAniv = `${d}/${m}`;
 
@@ -299,6 +367,45 @@
                 }
 
                 grade.appendChild(div);
+            }
+
+            renderizarAniversariantesDoMes(m);
+        }
+
+        function renderizarAniversariantesDoMes(mesFormatado) {
+            const conteinerLista = document.getElementById('lista-aniversarios');
+            conteinerLista.innerHTML = '';
+
+            const listaDoMes = [];
+
+            if (dadosPlanilha.aniversarios) {
+                Object.keys(dadosPlanilha.aniversarios).forEach(dataStr => {
+                    const partes = dataStr.split('/');
+                    if (partes.length === 2 && partes[1] === mesFormatado) {
+                        listaDoMes.push({
+                            dia: parseInt(partes[0], 10),
+                            dataFormatada: dataStr,
+                            nome: dadosPlanilha.aniversarios[dataStr]
+                        });
+                    }
+                });
+            }
+
+            // Ordena os aniversariantes pelo dia do mês
+            listaDoMes.sort((a, b) => a.dia - b.dia);
+
+            if (listaDoMes.length === 0) {
+                conteinerLista.innerHTML = '<div class="sem-aniversarios">Nenhum aniversariante neste mês.</div>';
+            } else {
+                listaDoMes.forEach(item => {
+                    const divItem = document.createElement('div');
+                    divItem.className = 'item-aniversario';
+                    divItem.innerHTML = `
+                        <span class="nome-aniv">🎉 ${item.nome}</span>
+                        <span class="data-aniv">Dia ${item.dia}</span>
+                    `;
+                    conteinerLista.appendChild(divItem);
+                });
             }
         }
 
