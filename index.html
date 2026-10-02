@@ -115,7 +115,13 @@
 
         .btn-mes:active { transform: scale(0.9); }
 
-        #mes-atual { font-size: 1.3rem; font-weight: 700; color: var(--cor-primaria); margin: 0; text-transform: capitalize;}
+        #mes-atual { 
+            font-size: 1.3rem; 
+            font-weight: 700; 
+            color: var(--cor-primaria); 
+            margin: 0; 
+            text-transform: capitalize;
+        }
 
         .grade-calendario {
             display: grid;
@@ -150,7 +156,11 @@
             color: var(--cor-primaria);
         }
 
-        .livre:active { transform: scale(0.92); background-color: var(--cor-livre-borda); color: white;}
+        .livre:active { 
+            transform: scale(0.92); 
+            background-color: var(--cor-livre-borda); 
+            color: white;
+        }
 
         .ocupado {
             background-color: var(--cor-ocupado);
@@ -208,16 +218,15 @@
             <button class="btn-mes" onclick="mudarMes(1)">▶</button>
         </div>
 
-        <div id="loading">Conectando ao banco de dados...</div>
+        <div id="loading">Buscando agenda atualizada...</div>
 
         <div class="grade-calendario" id="calendario" style="display: none;"></div>
     </div>
 
     <script>
-        // === CONFIGURAÇÕES PRINCIPAIS ===
+        // DADOS CONFIGURADOS
         const URL_API = 'https://script.google.com/macros/s/AKfycbyObehSqYcwzEgCLK1j5WhUHWfL0jPraVMOVPuwvDxI4qB3V9AuAEQczOkFFOGWGTOj/exec'; 
-        const NUMERO_WHATSAPP = '5544999129659'; // Ex: 55 (Brasil) + 44 (DDD) + Numero
-        // ================================
+        const NUMERO_WHATSAPP = '5544999129659';
 
         let dataAtual = new Date();
         let dadosPlanilha = { reservas: {}, aniversarios: {} };
@@ -226,21 +235,17 @@
 
         async function carregarDados() {
             try {
-                if(URL_API === 'https://script.google.com/macros/s/AKfycbyObehSqYcwzEgCLK1j5WhUHWfL0jPraVMOVPuwvDxI4qB3V9AuAEQczOkFFOGWGTOj/exec') {
-                    // Dados falsos de demonstração caso a URL não seja inserida
-                    dadosPlanilha = { 
-                        reservas: { "20/09/2026": "Teste" }, 
-                        aniversarios: { "25/09": "Teste" } 
-                    };
-                } else {
-                    const response = await fetch(URL_API);
-                    dadosPlanilha = await response.json();
-                }
+                const response = await fetch(URL_API);
+                if (!response.ok) throw new Error("Falha na resposta da API");
+                
+                dadosPlanilha = await response.json();
+                
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('calendario').style.display = 'grid';
                 renderizarCalendario();
             } catch (error) {
-                document.getElementById('loading').innerText = "Erro ao carregar. Verifique o link da API.";
+                console.error(error);
+                document.getElementById('loading').innerText = "Erro ao carregar dados da planilha. Verifique a permissão do script.";
             }
         }
 
@@ -277,14 +282,15 @@
 
                 div.innerText = dia;
 
-                if (dadosPlanilha.aniversarios[dataAniv]) {
+                if (dadosPlanilha.aniversarios && dadosPlanilha.aniversarios[dataAniv]) {
                     const icone = document.createElement('div');
                     icone.className = 'aniversario';
                     icone.innerText = '🎂';
+                    icone.title = `Aniversário de ${dadosPlanilha.aniversarios[dataAniv]}`;
                     div.appendChild(icone);
                 }
 
-                if (dadosPlanilha.reservas[dataCompleta]) {
+                if (dadosPlanilha.reservas && dadosPlanilha.reservas[dataCompleta]) {
                     div.className = 'dia ocupado';
                     div.onclick = () => alert(`Esta data já está reservada por: ${dadosPlanilha.reservas[dataCompleta]}`);
                 } else {
@@ -303,7 +309,7 @@
 
         function abrirWhatsApp(dataEscolhida) {
             const mensagem = `Olá Bruno! Vi no aplicativo que a Ilha Figueira está livre no dia ${dataEscolhida}. Gostaria de fazer uma reserva.`;
-            const url = `https://wa.me/${+5544999129659}?text=${encodeURIComponent(mensagem)}`;
+            const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
             window.open(url, '_blank');
         }
 
