@@ -398,7 +398,7 @@
 
     <script>
         const URL_API = 'https://script.google.com/macros/s/AKfycbyObehSqYcwzEgCLK1j5WhUHWfL0jPraVMOVPuwvDxI4qB3V9AuAEQczOkFFOGWGTOj/exec'; 
-        const NUMERO_WHATSAPP = '5544999129659';
+        const NUMERO_WHATSAPP = '5544998018213';
 
         let dataAtual = new Date();
         let dadosPlanilha = { reservas: {}, aniversarios: {} };
@@ -572,7 +572,7 @@
                 textoDatas = `para as seguintes datas:\n- ${diasSelecionados.join('\n- ')}`;
             }
 
-            const mensagem = `Olá Bruno! Vi no aplicativo que a Ilha Figueira está livre e gostaria de solicitar a reserva ${textoDatas}.`;
+            const mensagem = `Olá Élcio! Vi no aplicativo que a Ilha Figueira está livre e gostaria de solicitar a reserva ${textoDatas}.`;
             const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
             
             window.open(url, '_blank');
