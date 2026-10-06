@@ -536,7 +536,7 @@
             listaDoMes.sort((a, b) => a.dia - b.dia);
 
             if (listaDoMes.length === 0) {
-                conteinerLista.innerHTML = '<div class="sem-aniversarios">Nenhum aniversariante neste mês.</div>';
+                conteinerLista.innerHTML = '<div class="sem-aniversarios">Nenhum aniversário cadastrado neste mês.</div>';
             } else {
                 listaDoMes.forEach(item => {
                     const divItem = document.createElement('div');
