@@ -2,284 +2,245 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva Ilha Figueira</title>
-
-    <!-- Configurações PWA (App Nativo) -->
-    <link rel="icon" href="https://fav.farm/🏝️" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#047857">
-
-    <!-- Fontes Google -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Associação Ilha Figueira</title>
+    <!-- Fonte Premium Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --brand-green: #047857;
-            --brand-green-dark: #065f46;
+            --brand-green: #059669; /* Verde Esmeralda moderno */
+            --brand-green-dark: #047857;
             --brand-green-light: #ecfdf5;
+            --brand-green-border: #a7f3d0;
             --bg-main: #f8fafc;
             --card-bg: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --occupied: #fee2e2;
-            --occupied-text: #991b1b;
-            --selected: #047857;
-            --selected-text: #ffffff;
+            --danger-bg: #fef2f2;
+            --danger-text: #ef4444;
+            --danger-border: #fecaca;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.01);
+            --shadow-floating: 0 20px 30px -10px rgba(5, 150, 105, 0.3);
+            --radius-card: 24px;
+            --radius-btn: 14px;
         }
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
-            padding-bottom: 110px;
+            margin: 0;
+            padding: 0 0 100px 0; /* Espaço para o botão flutuante */
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .container {
-            width: 100%;
-            max-width: 480px;
-            min-height: 100vh;
-            background: var(--bg-main);
-        }
-
-        /* Header Moderno */
         header {
-            background: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
+            background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
             color: white;
-            padding: 24px 20px;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
-            box-shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.25);
+            width: 100%;
+            padding: 35px 20px 45px 20px;
             text-align: center;
+            border-bottom-left-radius: 32px;
+            border-bottom-right-radius: 32px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         header h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 800;
             letter-spacing: -0.5px;
         }
 
         header p {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            margin-top: 4px;
-        }
-
-        .btn-share {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 14px;
-            cursor: pointer;
-            font-weight: 600;
-            backdrop-filter: blur(4px);
-            transition: all 0.2s ease;
-        }
-
-        .btn-share:active {
-            transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Seção do Calendário */
-        .calendar-card {
-            background: var(--card-bg);
-            margin: 16px;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border-color);
-        }
-
-        .controles-mes {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .mes-navegacao {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .mes-navegacao h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
-            text-transform: capitalize;
-        }
-
-        .btn-mes {
-            background: #f1f5f9;
-            border: none;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            cursor: pointer;
-            color: var(--text-main);
-            transition: background 0.2s;
-        }
-
-        .btn-mes:active {
-            background: #e2e8f0;
-        }
-
-        .btn-hoje {
-            background: var(--brand-green-light);
-            color: var(--brand-green-dark);
-            border: none;
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-hoje:active {
-            transform: scale(0.95);
-        }
-
-        /* Grade do Calendário */
-        .dias-semana {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .grade-dias {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-        }
-
-        .dia {
-            aspect-ratio: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
+            margin: 6px 0 0 0;
             font-size: 0.9rem;
-            font-weight: 600;
-            position: relative;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s ease;
-        }
-
-        .dia.vazio {
-            cursor: default;
-        }
-
-        .dia.inativo {
-            color: #cbd5e1;
-            background: #f8fafc;
-            cursor: not-allowed;
-            opacity: 0.45;
-        }
-
-        .dia.livre {
-            background: #f1f5f9;
-            color: var(--text-main);
-        }
-
-        .dia.livre:active {
-            transform: scale(0.92);
-        }
-
-        .dia.ocupado {
-            background: var(--occupied);
-            color: var(--occupied-text);
-            cursor: pointer;
-        }
-
-        .dia.selecionado {
-            background: var(--selected) !important;
-            color: var(--selected-text) !important;
-            box-shadow: 0 4px 10px rgba(4, 120, 87, 0.3);
-        }
-
-        .aniversario-icone {
-            font-size: 0.65rem;
-            position: absolute;
-            top: 2px;
-            right: 2px;
-        }
-
-        /* Legenda */
-        .legenda {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px dashed var(--border-color);
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            opacity: 0.85;
             font-weight: 500;
         }
 
-        .legenda-item {
+        .container {
+            background: var(--card-bg);
+            width: 92%;
+            max-width: 480px;
+            border-radius: var(--radius-card);
+            padding: 24px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid #f1f5f9;
+            margin-top: -20px;
+            z-index: 10;
+        }
+
+        .legenda {
+            display: flex;
+            justify-content: space-around;
+            background: #f1f5f9;
+            padding: 10px 14px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .item-legenda {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .dot {
+        .bolinha {
             width: 10px;
             height: 10px;
             border-radius: 50%;
         }
 
-        .dot.livre { background: #f1f5f9; border: 1px solid #cbd5e1; }
-        .dot.ocupado { background: var(--occupied); }
-        .dot.selecionado { background: var(--selected); }
-
-        /* Aniversariantes do Mês */
-        .aniversarios-card {
-            background: var(--card-bg);
-            margin: 0 16px 16px 16px;
-            border-radius: 20px;
-            padding: 18px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        .controles-mes {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        .aniversarios-card h3 {
+        .btn-mes {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid #e2e8f0;
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-btn);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-mes:active { 
+            transform: scale(0.92); 
+            background-color: #e2e8f0;
+        }
+
+        #mes-atual { 
+            font-size: 1.25rem; 
+            font-weight: 800; 
+            color: var(--text-main); 
+            margin: 0; 
+            text-transform: capitalize;
+            letter-spacing: -0.3px;
+        }
+
+        .grade-calendario {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .dia-semana {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            padding-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .dia {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        /* Status dos Dias */
+        .livre {
+            background-color: var(--brand-green-light);
+            border: 1.5px solid var(--brand-green-border);
+            color: var(--brand-green-dark);
+        }
+
+        .livre:hover {
+            border-color: var(--brand-green);
+        }
+
+        /* Estado Selecionado */
+        .selecionado {
+            background-color: var(--brand-green) !important;
+            border-color: var(--brand-green-dark) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .ocupado {
+            background-color: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            color: var(--danger-text);
+            cursor: not-allowed;
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+
+        .inativo {
+            background-color: transparent;
+            color: transparent;
+            pointer-events: none;
+        }
+
+        .aniversario {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            font-size: 0.85rem;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+        }
+
+        /* Seção Aniversariantes */
+        .secao-aniversarios {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .secao-aniversarios h3 {
             font-size: 0.95rem;
             color: var(--text-main);
-            margin-bottom: 12px;
+            margin: 0 0 14px 0;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            font-weight: 800;
         }
 
         .lista-aniversarios {
@@ -288,166 +249,336 @@
             gap: 8px;
         }
 
-        .aniversario-item {
+        .item-aniversario {
+            background-color: var(--bg-main);
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #fafafa;
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 0.85rem;
             border: 1px solid #f1f5f9;
         }
 
-        .aniversario-item .nome {
-            font-weight: 600;
+        .item-aniversario .nome-aniv {
             color: var(--text-main);
+            font-weight: 700;
         }
 
-        .aniversario-item .data {
-            font-weight: 700;
-            color: var(--brand-green);
+        .item-aniversario .data-aniv {
+            color: var(--brand-green-dark);
+            font-weight: 800;
             background: var(--brand-green-light);
-            padding: 2px 8px;
-            border-radius: 6px;
+            padding: 3px 8px;
+            border-radius: 8px;
             font-size: 0.75rem;
         }
 
         .sem-aniversarios {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             font-style: italic;
+            text-align: center;
+            margin: 8px 0;
         }
 
-        /* Barra Flutuante de Confirmação */
+        /* Barra Flutuante de Reserva Estilo Booking/Airbnb */
         .barra-flutuante {
             position: fixed;
-            bottom: 0;
+            bottom: 20px;
             left: 50%;
-            transform: translateX(-50%) translateY(100%);
-            width: 100%;
+            transform: translateX(-50%) translateY(120%);
+            width: 90%;
             max-width: 480px;
-            background: white;
-            padding: 16px 20px;
-            box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            background: #0f172a;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .barra-flutuante.ativa {
+        .barra-flutuante.visivel {
             transform: translateX(-50%) translateY(0);
         }
 
-        .info-selecao .qtd {
+        .info-selecao {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .qtd-dias {
             font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-main);
+            font-weight: 800;
+            color: #ffffff;
         }
 
-        .info-selecao .detalhe {
+        .sub-selecao {
             font-size: 0.75rem;
-            color: var(--text-muted);
+            color: #94a3b8;
         }
 
-        .btn-reservar {
-            background: #25d366;
+        .btn-reservar-agora {
+            background: var(--brand-green);
             color: white;
             border: none;
             padding: 12px 20px;
-            border-radius: 14px;
-            font-weight: 700;
+            border-radius: var(--radius-btn);
+            font-weight: 800;
             font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-            transition: all 0.2s;
+            box-shadow: var(--shadow-floating);
+            transition: transform 0.2s ease, background 0.2s ease;
         }
 
-        .btn-reservar:active {
-            transform: scale(0.96);
+        .btn-reservar-agora:active {
+            transform: scale(0.95);
+            background: var(--brand-green-dark);
         }
 
-        /* Loading */
-        .loading-overlay {
+        #loading {
             text-align: center;
-            padding: 30px;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--brand-green-dark);
+            padding: 40px 0;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
     </style>
 </head>
 <body>
 
+    <header>
+        <span class="header-badge">Rio Ivaí • Paraná</span>
+        <h1>Ilha Figueira</h1>
+        <p>Calendário Oficial de Reservas</p>
+    </header>
+
     <div class="container">
-        <header>
-            <h1>Associação Ilha Figueira</h1>
-            <p>Agenda Oficial de Reservas • Rio Ivaí</p>
-            <button class="btn-share" onclick="compartilharApp()">
-                📲 Compartilhar Agenda
-            </button>
-        </header>
-
-        <div class="calendar-card">
-            <div class="controles-mes">
-                <div class="mes-navegacao">
-                    <button class="btn-mes" onclick="mudarMes(-1)">◀</button>
-                    <h2 id="mes-titulo">Carregando...</h2>
-                    <button class="btn-mes" onclick="mudarMes(1)">▶</button>
-                </div>
-                <button class="btn-hoje" onclick="irParaHoje()">
-                    Voltar para o mês atual
-                </button>
-            </div>
-
-            <div class="dias-semana">
-                <div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div>
-            </div>
-
-            <div id="grade-dias" class="grade-dias">
-                <div class="loading-overlay">Carregando disponibilidade...</div>
-            </div>
-
-            <div class="legenda">
-                <div class="legenda-item"><div class="dot livre"></div>Livre</div>
-                <div class="legenda-item"><div class="dot selecionado"></div>Selecionado</div>
-                <div class="legenda-item"><div class="dot ocupado"></div>Reservado</div>
-            </div>
+        <div class="legenda">
+            <div class="item-legenda"><div class="bolinha" style="background: var(--brand-green-border);"></div> Livre</div>
+            <div class="item-legenda"><div class="bolinha" style="background: var(--brand-green);"></div> Selecionado</div>
+            <div class="item-legenda"><div class="bolinha" style="background: var(--danger-text);"></div> Ocupado</div>
         </div>
 
-        <div class="aniversarios-card">
-            <h3>🎂 Aniversariantes do Mês</h3>
-            <div id="lista-aniversarios" class="lista-aniversarios">
-                <div class="sem-aniversarios">Buscando aniversariantes...</div>
+        <div class="controles-mes">
+            <button class="btn-mes" onclick="mudarMes(-1)">◀</button>
+            <h2 id="mes-atual">Carregando...</h2>
+            <button class="btn-mes" onclick="mudarMes(1)">▶</button>
+        </div>
+
+        <div id="loading">Carregando agenda...</div>
+
+        <div id="conteudo-app" style="display: none;">
+            <div class="grade-calendario" id="calendario"></div>
+
+            <div class="secao-aniversarios">
+                <h3>🎂 Aniversariantes do Mês</h3>
+                <div id="lista-aniversarios" class="lista-aniversarios"></div>
             </div>
         </div>
     </div>
 
-    <!-- Barra Flutuante de Seleção -->
+    <!-- Barra de Ação Flutuante -->
     <div id="barra-flutuante" class="barra-flutuante">
         <div class="info-selecao">
-            <div class="qtd" id="qtd-dias">0 dias selecionados</div>
-            <div class="detalhe">Toque para solicitar a reserva</div>
+            <span id="texto-qtd-dias" class="qtd-dias">0 dias selecionados</span>
+            <span class="sub-selecao">Toque para cancelar ou adicionar</span>
         </div>
-        <button class="btn-reservar" onclick="enviarWhatsApp()">
-            Reservar no Zap
-        </button>
+        <button class="btn-reservar-agora" onclick="enviarReservaMultipla()">Reservar</button>
     </div>
 
     <script>
-        // CONFIGURAÇÕES DA ASSOCIAÇÃO
-        const CONTATO_WHATSAPP = '5544998018213'; // Elcio
-        const NOME_CONTATO = 'Elcio';
-        
-        // Insira a URL do seu Google Apps Script já testada e configurada
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_SEU_SCRIPT_AQUI/exec';
+        const URL_API = 'https://script.google.com/macros/s/AKfycbyObehSqYcwzEgCLK1j5WhUHWfL0jPraVMOVPuwvDxI4qB3V9AuAEQczOkFFOGWGTOj/exec'; 
+        const NUMERO_WHATSAPP = '5544998018213';
 
-        let dataExibicao = new Date();
-        let diasSelecionados = [];
-        let dadosPlanilha = { reservas
+        let dataAtual = new Date();
+        let dadosPlanilha = { reservas: {}, aniversarios: {} };
+        let diasSelecionados = []; // Guarda as datas escolhidas no formato DD/MM/AAAA
+
+        const nomesMeses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+        const diasSemana = ["D", "S", "T", "Q", "Q", "S", "S"];
+
+        async function carregarDados() {
+            try {
+                const response = await fetch(URL_API);
+                if (!response.ok) throw new Error("Falha na resposta da API");
+                
+                dadosPlanilha = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('conteudo-app').style.display = 'block';
+                renderizarCalendario();
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loading').innerText = "Erro ao carregar dados. Tente recarregar a página.";
+            }
+        }
+
+        function renderizarCalendario() {
+            const grade = document.getElementById('calendario');
+            grade.innerHTML = ''; 
+
+            const mes = dataAtual.getMonth();
+            const ano = dataAtual.getFullYear();
+            const m = String(mes + 1).padStart(2, '0');
+
+            document.getElementById('mes-atual').innerText = `${nomesMeses[mes]} ${ano}`;
+
+            diasSemana.forEach(dia => {
+                const div = document.createElement('div');
+                div.className = 'dia-semana';
+                div.innerText = dia;
+                grade.appendChild(div);
+            });
+
+            const primeiroDia = new Date(ano, mes, 1).getDay();
+            const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+
+            for (let i = 0; i < primeiroDia; i++) {
+                const div = document.createElement('div');
+                div.className = 'dia inativo';
+                grade.appendChild(div);
+            }
+
+            for (let dia = 1; dia <= ultimoDia; dia++) {
+                const div = document.createElement('div');
+                const d = String(dia).padStart(2, '0');
+                const dataCompleta = `${d}/${m}/${ano}`;
+                const dataAniv = `${d}/${m}`;
+
+                div.innerText = dia;
+
+                // Aniversário
+                if (dadosPlanilha.aniversarios && dadosPlanilha.aniversarios[dataAniv]) {
+                    const icone = document.createElement('div');
+                    icone.className = 'aniversario';
+                    icone.innerText = '🎂';
+                    icone.title = `Aniversário de ${dadosPlanilha.aniversarios[dataAniv]}`;
+                    div.appendChild(icone);
+                }
+
+                // Ocupado ou Livre
+                if (dadosPlanilha.reservas && dadosPlanilha.reservas[dataCompleta]) {
+                    div.className = 'dia ocupado';
+                    div.onclick = () => alert(`Esta data já está reservada por: ${dadosPlanilha.reservas[dataCompleta]}`);
+                } else {
+                    // Verifica se já está selecionado na memória
+                    if (diasSelecionados.includes(dataCompleta)) {
+                        div.className = 'dia livre selecionado';
+                    } else {
+                        div.className = 'dia livre';
+                    }
+                    div.onclick = () => alternarSelecaoDia(dataCompleta, div);
+                }
+
+                grade.appendChild(div);
+            }
+
+            renderizarAniversariantesDoMes(m);
+        }
+
+        function alternarSelecaoDia(dataCompleta, elemento) {
+            const index = diasSelecionados.indexOf(dataCompleta);
+
+            if (index > -1) {
+                // Se já estava selecionado, desmarca
+                diasSelecionados.splice(index, 1);
+                elemento.classList.remove('selecionado');
+            } else {
+                // Marca o dia
+                diasSelecionados.push(dataCompleta);
+                elemento.classList.add('selecionado');
+            }
+
+            atualizarBarraFlutuante();
+        }
+
+        function atualizarBarraFlutuante() {
+            const barra = document.getElementById('barra-flutuante');
+            const textoQtd = document.getElementById('texto-qtd-dias');
+
+            if (diasSelecionados.length > 0) {
+                const label = diasSelecionados.length === 1 ? '1 dia selecionado' : `${diasSelecionados.length} dias selecionados`;
+                textoQtd.innerText = label;
+                barra.classList.add('visivel');
+            } else {
+                barra.classList.remove('visivel');
+            }
+        }
+
+        function renderizarAniversariantesDoMes(mesFormatado) {
+            const conteinerLista = document.getElementById('lista-aniversarios');
+            conteinerLista.innerHTML = '';
+
+            const listaDoMes = [];
+
+            if (dadosPlanilha.aniversarios) {
+                Object.keys(dadosPlanilha.aniversarios).forEach(dataStr => {
+                    const partes = dataStr.split('/');
+                    if (partes.length === 2 && partes[1] === mesFormatado) {
+                        listaDoMes.push({
+                            dia: parseInt(partes[0], 10),
+                            nome: dadosPlanilha.aniversarios[dataStr]
+                        });
+                    }
+                });
+            }
+
+            listaDoMes.sort((a, b) => a.dia - b.dia);
+
+            if (listaDoMes.length === 0) {
+                conteinerLista.innerHTML = '<div class="sem-aniversarios">Nenhum aniversariante neste mês.</div>';
+            } else {
+                listaDoMes.forEach(item => {
+                    const divItem = document.createElement('div');
+                    divItem.className = 'item-aniversario';
+                    divItem.innerHTML = `
+                        <span class="nome-aniv">🎉 ${item.nome}</span>
+                        <span class="data-aniv">Dia ${item.dia}</span>
+                    `;
+                    conteinerLista.appendChild(divItem);
+                });
+            }
+        }
+
+        function mudarMes(direcao) {
+            dataAtual.setMonth(dataAtual.getMonth() + direcao);
+            renderizarCalendario();
+        }
+
+        function enviarReservaMultipla() {
+            if (diasSelecionados.length === 0) return;
+
+            // Ordena as datas em ordem cronológica
+            diasSelecionados.sort((a, b) => {
+                const [dA, mA, yA] = a.split('/').map(Number);
+                const [dB, mB, yB] = b.split('/').map(Number);
+                return new Date(yA, mA - 1, dA) - new Date(yB, mB - 1, dB);
+            });
+
+            let textoDatas = '';
+            if (diasSelecionados.length === 1) {
+                textoDatas = `para o dia ${diasSelecionados[0]}`;
+            } else {
+                textoDatas = `para as seguintes datas:\n- ${diasSelecionados.join('\n- ')}`;
+            }
+
+            const mensagem = `Olá Élcio! Vi no aplicativo que a Ilha Figueira está livre e gostaria de solicitar a reserva ${textoDatas}.`;
+            const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+            
+            window.open(url, '_blank');
+        }
+
+        carregarDados();
+    </script>
+</body>
+</html>
